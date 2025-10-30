@@ -381,8 +381,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Tailwind CSS for styling
 - React team for amazing library
 
-## 📞 Support
-
-For support, email your.email@example.com or create an issue in the repository.
-
 ---
