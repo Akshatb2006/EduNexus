@@ -214,18 +214,16 @@ export const assignmentAPI = {
   getStats: (id) => api.get(`/assignments/${id}/stats`),  // ✅ Fixed
 };
 
+// ============= SUBMISSION API FIX =============
 export const submissionAPI = {
-  submit: (data, onProgress) => {
-    const formData = new FormData();
-    Object.keys(data).forEach(key => {
-      if (data[key] !== null && data[key] !== undefined) {
-        formData.append(key, data[key]);
-      }
-    });
+  submit: (formData, onProgress) => {
+    console.log('Submitting FormData:', formData);
     
     return api.post('/submissions', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      timeout: 180000,
+      headers: { 
+        'Content-Type': 'multipart/form-data' 
+      },
+      timeout: 180000, // 3 minutes
       onUploadProgress: (progressEvent) => {
         if (onProgress) {
           const percentCompleted = Math.round(
@@ -236,22 +234,23 @@ export const submissionAPI = {
       },
     });
   },
+  
   getAssignmentSubmissions: (assignmentId) => 
-    api.get(`/submissions/assignment/${assignmentId}`),  // ✅ Fixed
+    api.get(`/submissions/assignment/${assignmentId}`),
+  
   getMySubmission: (assignmentId) => 
-    api.get(`/submissions/my-submission/${assignmentId}`),  // ✅ Fixed
-  getById: (id) => api.get(`/submissions/${id}`),  // ✅ Fixed
-  grade: (id, data) => api.put(`/submissions/${id}/grade`, data),  // ✅ Fixed
-  delete: (id) => api.delete(`/submissions/${id}`),  // ✅ Fixed
-  resubmit: (id, data) => {
-    const formData = new FormData();
-    Object.keys(data).forEach(key => {
-      if (data[key] !== null && data[key] !== undefined) {
-        formData.append(key, data[key]);
-      }
-    });
-    return api.put(`/submissions/${id}/resubmit`, formData, {  // ✅ Fixed
+    api.get(`/submissions/my-submission/${assignmentId}`),
+  
+  getById: (id) => api.get(`/submissions/${id}`),
+  
+  grade: (id, data) => api.put(`/submissions/${id}/grade`, data),
+  
+  delete: (id) => api.delete(`/submissions/${id}`),
+  
+  resubmit: (id, formData) => {
+    return api.put(`/submissions/${id}/resubmit`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 180000,
     });
   },
 };
